@@ -5,20 +5,24 @@ import Link from 'next/link'
 import { signup } from '../actions'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, CheckCircle2 } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 
 export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   async function handleSignup(formData: FormData) {
     setLoading(true)
     setError(null)
+    setSuccess(null)
     try {
       const result = await signup(formData)
       if (result?.error) {
         setError(result.error)
+      } else if (result?.success) {
+        setSuccess(result.success)
       }
     } finally {
       setLoading(false)
@@ -44,6 +48,13 @@ export default function RegisterPage() {
           <Alert variant="destructive" className="border-destructive/20 bg-destructive/10 text-destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        
+        {success && (
+          <Alert className="border-primary/20 bg-primary/10 text-primary">
+            <CheckCircle2 className="h-4 w-4" />
+            <AlertDescription>{success}</AlertDescription>
           </Alert>
         )}
         

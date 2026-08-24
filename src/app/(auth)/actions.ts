@@ -37,13 +37,21 @@ export async function signup(formData: FormData) {
 
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/callback`,
+    }
   })
 
   if (error) {
     return { error: error.message }
+  }
+
+  // Si Supabase requiere confirmación de email, la sesión será null
+  if (data.user && !data.session) {
+    return { success: '¡Cuenta creada! Por favor, revisa tu correo electrónico para verificar tu cuenta.' }
   }
 
   revalidatePath('/dashboard')
