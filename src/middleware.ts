@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
-import { ratelimit } from '@/lib/redis/ratelimit'
+import { chatRateLimit, uploadRateLimit } from '@/lib/redis/ratelimit'
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -40,21 +40,27 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // 1. Rate Limiting for specific API routes
-  if (pathname.startsWith('/api/upload') || pathname.startsWith('/api/chat') || pathname.startsWith('/api/cover-letter')) {
-    // Use user ID if authenticated, otherwise fallback to IP
+  const isUpload = pathname.startsWith('/api/upload')
+  const isChat = pathname.startsWith('/api/chat') || pathname.startsWith('/api/cover-letter')
+  
+  // Solo limitamos las peticiones POST (creación/generación)
+  if ((isUpload || isChat) && request.method === 'POST') {
     const identifier = user ? user.id : (request.headers.get('x-forwarded-for') ?? '127.0.0.1')
     try {
+      const ratelimit = isUpload ? uploadRateLimit : chatRateLimit
       const { success, limit, reset, remaining } = await ratelimit.limit(identifier)
       
       if (!success) {
+        const errorMessage = isUpload 
+          ? 'Límite diario de subidas alcanzado (Máximo 10 por día). Inténtalo mañana.' 
+          : 'Límite diario de mensajes alcanzado (Máximo 30 por día). Inténtalo mañana.'
         return NextResponse.json(
-          { error: 'Too Many Requests', limit, remaining, reset },
+          { error: errorMessage, limit, remaining, reset },
           { status: 429 }
         )
       }
     } catch (ratelimitError) {
       console.error('Rate limit error:', ratelimitError)
-      // Continue even if rate limiting fails rather than blocking the request
     }
   }
 
