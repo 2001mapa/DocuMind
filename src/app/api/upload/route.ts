@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Límite de Portafolio: Máximo 3 documentos por usuario para evitar llenar la DB
+    // Límite Gratuito: Máximo 3 documentos por usuario para evitar llenar la DB
     const { count, error: countError } = await supabase
       .from('documents')
       .select('*', { count: 'exact', head: true })
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
     if (count !== null && count >= 3) {
       return NextResponse.json({ 
-        error: 'Límite de portafolio alcanzado. Esta cuenta gratuita permite un máximo de 3 documentos.' 
+        error: 'Límite de la versión gratuita alcanzado. Esta cuenta gratuita permite un máximo de 3 documentos.' 
       }, { status: 403 })
     }
 
