@@ -81,3 +81,29 @@ export async function logout() {
   await supabase.auth.signOut()
   redirect('/login')
 }
+
+export async function resetPassword(formData: FormData) {
+  const email = formData.get('email') as string
+  if (!email) return { error: 'Email requerido' }
+
+  const supabase = await createClient()
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/callback?next=/update-password`
+  })
+
+  if (error) return { error: error.message }
+  return { success: 'Correo de recuperación enviado. Revisa tu bandeja de entrada.' }
+}
+
+export async function updatePassword(formData: FormData) {
+  const password = formData.get('password') as string
+  if (!password) return { error: 'Contraseña requerida' }
+
+  const supabase = await createClient()
+  const { error } = await supabase.auth.updateUser({ password })
+
+  if (error) return { error: error.message }
+  
+  revalidatePath('/dashboard')
+  redirect('/dashboard')
+}
