@@ -1,9 +1,10 @@
-﻿import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
 import { UploadCloud, FileText, ShieldCheck } from 'lucide-react'
 import { UploadModal } from '@/components/upload/UploadModal'
 import Link from 'next/link'
+import { DeleteDocumentButton } from './DeleteDocumentButton'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -52,10 +53,13 @@ export default async function DashboardPage() {
                       {doc.page_count} páginas • {(doc.file_size / 1024 / 1024).toFixed(2)} MB
                     </CardDescription>
                   </CardHeader>
-                  <CardFooter className="mt-auto pt-4">
-                    <Button variant="outline" size="sm" className="w-full rounded-md hover:scale-105 active:scale-95 transition-transform">
-                      Analizar en Chat
-                    </Button>
+                  <CardFooter className="mt-auto pt-4 flex gap-2">
+                    <Link href="/dashboard/chat" className="flex-1">
+                      <Button variant="outline" size="sm" className="w-full rounded-md hover:scale-105 active:scale-95 transition-transform">
+                        Analizar en Chat
+                      </Button>
+                    </Link>
+                    <DeleteDocumentButton id={doc.id} />
                   </CardFooter>
                 </Card>
               ))}
