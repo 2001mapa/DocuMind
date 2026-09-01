@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { login } from '../actions'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, ChevronLeft } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 
 export default function LoginPage() {
@@ -26,7 +26,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4 relative">
+      <Link 
+        href="/" 
+        className="absolute left-4 top-4 md:left-8 md:top-8 flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <ChevronLeft className="mr-2 h-4 w-4" />
+        Volver al inicio
+      </Link>
       <div className="w-full max-w-[400px] space-y-8">
         <div className="flex flex-col items-center justify-center space-y-3 text-center">
           <div className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-primary text-primary-foreground shadow-sm mb-2">
