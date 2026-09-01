@@ -7,7 +7,7 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col bg-background selection:bg-primary/20">
       {/* Navbar */}
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-6 md:px-12">
           <div className="flex items-center gap-2">
             <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-primary text-primary-foreground shadow-sm">
               <div className="absolute -left-2 -top-2 h-7 w-7 rounded-md border-[3px] border-primary-foreground/30" />
@@ -34,7 +34,7 @@ export default function LandingPage() {
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-24 pb-32 sm:pt-32 sm:pb-40">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
-          <div className="container relative mx-auto px-4 sm:px-6 flex flex-col items-center text-center">
+          <div className="max-w-7xl relative mx-auto px-6 md:px-12 flex flex-col items-center text-center">
             <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-8 backdrop-blur-sm">
               <Zap className="mr-2 h-4 w-4" />
               Impulsado por Gemini AI
@@ -61,7 +61,7 @@ export default function LandingPage() {
 
         {/* Features Section - Modern Asymmetrical Layout */}
         <section className="py-24 bg-background border-y border-border/40">
-          <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-7xl mx-auto px-6 md:px-12">
             <div className="mb-16 max-w-2xl">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Arquitectura RAG Empresarial</h2>
               <p className="mt-4 text-lg text-muted-foreground">
@@ -179,7 +179,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="py-8 border-t border-border/40 bg-background">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2 font-bold text-foreground">
             <Lock className="h-4 w-4 text-primary" /> DocuMind AI
           </div>
